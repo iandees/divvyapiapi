@@ -45,7 +45,7 @@
 
         var geojsonLayer = new L.GeoJSON([], {
             onEachFeature: function (feature, layer) {
-                layer.bindPopup(feature.properties.stationName);
+                layer.bindPopup("<h4>"+feature.properties.stationName+"</h4><p>" + feature.properties.availableBikes + " bikes, " + feature.properties.availableDocks + " docks available.</p>");
             }
         });
 
