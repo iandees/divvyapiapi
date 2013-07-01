@@ -2,16 +2,11 @@ Divvy API API
 =============
 
 Inspired by [Tom MacWright](https://github.com/tmcw/wmataapiapi), this is a very
-simple API to get information about the Divvy stations near you.
+simple API to get information about the [Divvy](http://divvybikes.com/) stations near you.
 
 I proxy the real (unpublished) [Divvy API](http://www.divvybikes.com/stations/json/)
 and throw it into a KNN tree so you can make efficient nearby lookups based on a provided lat/lon.
 You can also filter results to only include stations with bikes or with available docks.
-
-`/stations/all`
----------------
-
-Returns all stations and their statuses as a GeoJSON document.
 
 `/stations/nearby`
 ------------------
