@@ -1,0 +1,72 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Divvy Geo Search Example</title>
+    <meta charset="utf-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.css" />
+    <!--[if lte IE 8]><link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.ie.css" /><![endif]-->
+</head>
+<body>
+    <div id="map" style="width: 600px; height: 400px"></div><br/>
+    <input id="prefer_bikes" type="radio" name="prefer" value="bikes" onClick="updateToggles(this);"/>
+    <label for="prefer_bikes">Only show stations with available bikes</label><br/>
+    <input id="prefer_docks" type="radio" name="prefer" value="docks" onClick="updateToggles(this);"/>
+    <label for="prefer_docks">Only show stations with available docks</label><br/>
+    <input id="prefer_all" type="radio" name="prefer" value="all" onClick="updateToggles(this);" checked/>
+    <label for="prefer_all">Show all stations</label>
+
+    <script src="http://cdn.leafletjs.com/leaflet-0.5/leaflet.js"></script>
+    <script>
+
+        var prefer = null;
+        var map = L.map('map').setView([41.8826, -87.6506], 13);
+
+        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
+        }).addTo(map);
+
+        var geojsonLayer = new L.GeoJSON([], {
+            onEachFeature: function (feature, layer) {
+                layer.bindPopup(feature.properties.stationName);
+            }
+        });
+
+        function updateToggles(radio) {
+            if (radio.value === "all") {
+                prefer = null;
+            } else {
+                prefer = radio.value;
+            }
+        }
+
+        function onMapClick(e) {
+            console.log("You clicked the map at " + e.latlng.toString());
+            var xhrequest = new XMLHttpRequest();
+            var url= "/stations/nearby?lat="+e.latlng.lat+"&lon="+e.latlng.lng;
+            if (prefer) {
+                url += "&prefer="+prefer;
+            }
+            xhrequest.onreadystatechange = function() {
+                if (xhrequest.readyState == 4) {
+                    if (xhrequest.status == 200) {
+                        geojsonLayer.clearLayers();
+                        var layerItems =  JSON.parse(xhrequest.responseText);
+                        geojsonLayer.addData(layerItems);
+                        map.addLayer(geojsonLayer);
+                    }
+                }
+            };
+            xhrequest.open('GET', url, true);
+            xhrequest.send(null);
+        }
+
+        map.on('click', onMapClick);
+
+    </script>
+</body>
+</html>

@@ -16,6 +16,9 @@ function availableBikes(station) {
     return station.availableBikes > 0;
 }
 
+app.get('/', function(req, res) {
+    res.sendfile('index.html');
+});
 app.get('/stations/all', cors(), function(req, res) {
     res.send(stations.map(stationToGeoJson));
 });
