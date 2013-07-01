@@ -1,11 +1,16 @@
 {
-  "name": "node-example",
+  "name": "divvyapi",
   "version": "0.0.1",
   "dependencies": {
-    "express": "3.1.x"
+    "express": "3.1.x",
+    "sphere-knn": "~1.2.1",
+    "request": "~2.21.0",
+    "cors": "~1.0.1"
   },
   "engines": {
     "node": "0.10.x",
     "npm": "1.2.x"
-  }
+  },
+  "author": "Ian Dees <ian.dees@gmail.com>",
+  "license": "BSD"
 }
