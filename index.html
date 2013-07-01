@@ -11,6 +11,27 @@
     <!--[if lte IE 8]><link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.ie.css" /><![endif]-->
 </head>
 <body>
+    <h1>Super Simple Divvy API</h1>
+    <hr/>
+
+    <p>
+        This is a very simple API to get information about the Divvy stations near you.
+    </p>
+
+    <p>
+        I proxy the real (unpublished) <a href="http://www.divvybikes.com/stations/json/">Divvy API</a>
+        and throw it into a KNN tree so you can make efficient nearby lookups based on a provided lat/lon.
+        You can also filter results to only include stations with bikes or with available docks.
+    </p>
+
+    <h3>Example</h3>
+    <hr/>
+
+    <p>
+        The map below is a quick example of the API in action. Click anywhere to find the 5 closest
+        stations. Manipulate the radio buttons to filter stations with docks or bikes available.
+    </p>
+
     <div id="map" style="width: 600px; height: 400px"></div><br/>
     <input id="prefer_bikes" type="radio" name="prefer" value="bikes" onClick="updateToggles(this);"/>
     <label for="prefer_bikes">Only show stations with available bikes</label><br/>
@@ -18,6 +39,28 @@
     <label for="prefer_docks">Only show stations with available docks</label><br/>
     <input id="prefer_all" type="radio" name="prefer" value="all" onClick="updateToggles(this);" checked/>
     <label for="prefer_all">Show all stations</label>
+
+    <h3>API</h3>
+    <hr/>
+
+    <p>The API is quite simple. There are two endpoints:</p>
+
+    <h4><code>/stations/all</code></h4>
+
+    <p>Returns all stations and their statuses as a GeoJSON document.</p>
+
+    <h4><code>/stations/nearby</code></h4>
+
+    <table>
+        <tr><th>Query Arg Name</th><th>Description</th></tr>
+        <tr><td>lat</td><td><em>(required)</em> The latitude to search from.</td></tr>
+        <tr><td>lon</td><td><em>(required)</em> The longitude to search from.</td></tr>
+        <tr><td>prefer</td><td>Value <code>bikes</code> will only show stations with available
+            bikes while value <code>docks</code> will only show stations with available docks.</td></tr>
+        <tr><td>max_stations</td><td>The maximum number of results to show.</td></tr>
+    </table>
+
+    <p>Returns all stations near to a specified lat/lon pair as a GeoJSON document.</p>
 
     <script src="http://cdn.leafletjs.com/leaflet-0.5/leaflet.js"></script>
     <script>
