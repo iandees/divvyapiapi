@@ -17,7 +17,7 @@ function availableBikes(station) {
 }
 
 app.get('/stations/all', cors(), function(req, res) {
-    res.send(stations);
+    res.send(stations.map(stationToGeoJson));
 });
 app.get('/stations/nearby', cors(), function(req, res) {
     if (!stationsLookup) {
@@ -28,18 +28,40 @@ app.get('/stations/nearby', cors(), function(req, res) {
         res.status(400).send({error: 'Requires lat/lon query arg.'});
     }
 
-    var stations = stationsLookup(req.query.lon, req.query.lat),
-        max_stations = req.query.max_stations || 5;
-    if (req.query.prefer === 'bikes') {
+    var stations = stationsLookup(req.query.lat, req.query.lon),
+        max_stations = req.query.max_stations || 5,
+        prefer = req.query.prefer;
+
+    if (prefer === 'bikes') {
         stations = stations.filter(availableBikes);
-    } else if (req.query.prefer === 'docks') {
+    } else if (prefer === 'docks') {
         stations = stations.filter(availableDocks);
     }
 
     stations = stations.slice(0, max_stations);
 
-    res.send(stations);
+    res.send(stations.map(stationToGeoJson));
 });
+
+function stationToGeoJson(obj) {
+    return {
+        "type": "Feature",
+        "properties": {
+            "id": obj.id,
+            "stationName": obj.stationName,
+            "availableDocks": obj.availableDocks,
+            "availableBikes": obj.availableBikes,
+            "statusValue": obj.statusValue
+        },
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                obj.longitude,
+                obj.latitude
+            ]
+        }
+    };
+}
 
 function minutely() {
     request({
