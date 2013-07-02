@@ -6,6 +6,7 @@ var app = express();
 app.use(express.logger());
 
 var stations = {},
+    stationsById = {},
     stationsLookup = null;
 
 function availableDocks(station) {
@@ -42,6 +43,19 @@ app.get('/stations/nearby', cors(), function(req, res) {
 
     res.send(stations.map(stationToGeoJson));
 });
+app.get('/stations/:id', cors(), function(req, res) {
+    if (!stationsById) {
+        res.status(500).send({error: 'No stations available.'});
+    }
+
+    var station = stationsById[req.params.id];
+
+    if (!station) {
+        res.status(404).send({error: 'Do not know that station id.'});
+    }
+
+    res.send(stationToGeoJson(station));
+});
 
 function stationToGeoJson(obj) {
     return {
@@ -71,9 +85,15 @@ function minutely() {
         if (err) return;
         stations = body.stationBeanList;
         stationsLookup = new sphereKnn(stations);
+
+        stationsById = {};
+        for (var i = 0; i < stations.length; i++) {
+            stationsById[stations[i].id] = stations[i];
+        }
+
         var lastUpdate = Date.parse(body.executionTime + " UTC-05:00"),
             ago = new Date().getTime() - lastUpdate;
-        console.log("Successfully knn'd " + stations.length + " stations. Last update was " + ago + " ago");
+        console.log("Successfully loaded " + stations.length + " stations. Last update was " + ago + "ms ago");
     });
 }
 

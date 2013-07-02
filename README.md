@@ -19,3 +19,8 @@ Returns stations near a specified lat/lon pair as a GeoJSON document.
 | `lon`     | *required* The longitude to search from.
 | `prefer`  | When not present, all stations are returned. When `bikes`, only stations with available bikes are returned. When `docks`, only stations with available docks are returned.
 | `max_stations` | The maximum number of stations to return. Default is 5.
+
+`/stations/:id`
+------------------
+
+Returns the specified station as a GeoJSON document.
