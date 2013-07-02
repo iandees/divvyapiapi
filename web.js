@@ -66,7 +66,8 @@ function stationToGeoJson(obj) {
             "availableDocks": obj.availableDocks,
             "availableBikes": obj.availableBikes,
             "statusValue": obj.statusValue,
-            "landmark": obj.landMark
+            "landmark": obj.landMark,
+            "testStation": obj.testStation
         },
         "geometry": {
             "type": "Point",
