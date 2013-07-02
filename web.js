@@ -18,15 +18,15 @@ function availableBikes(station) {
 }
 
 app.get('/', function(req, res) {
-    res.sendfile('index.html');
+    return res.sendfile('index.html');
 });
 app.get('/stations/nearby', cors(), function(req, res) {
     if (!stationsLookup) {
-        res.status(500).send({error: 'No stations available.'});
+        return res.status(500).send({error: 'No stations available.'});
     }
 
     if (!(req.query.lat && req.query.lon)) {
-        res.status(400).send({error: 'Requires lat/lon query arg.'});
+        return res.status(400).send({error: 'Requires lat/lon query arg.'});
     }
 
     var stations = stationsLookup(req.query.lat, req.query.lon),
@@ -41,20 +41,20 @@ app.get('/stations/nearby', cors(), function(req, res) {
 
     stations = stations.slice(0, max_stations);
 
-    res.send(stations.map(stationToGeoJson));
+    return res.send(stations.map(stationToGeoJson));
 });
 app.get('/stations/:id', cors(), function(req, res) {
     if (!stationsById) {
-        res.status(500).send({error: 'No stations available.'});
+        return res.status(500).send({error: 'No stations available.'});
     }
 
     var station = stationsById[req.params.id];
 
     if (!station) {
-        res.status(404).send({error: 'Do not know that station id.'});
+        return res.status(404).send({error: 'Do not know that station id.'});
     }
 
-    res.send(stationToGeoJson(station));
+    return res.send(stationToGeoJson(station));
 });
 
 function stationToGeoJson(obj) {
