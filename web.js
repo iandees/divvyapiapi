@@ -6,9 +6,9 @@ var request = require('request'),
 var app = express();
 app.use(express.logger());
 
-var tempodb = new TempoDBClient(process.env.TEMPODB_API_KEY, process.env.TEMPODB_API_SECRET);
-
 console.log(process.env);
+
+var tempodb = new TempoDBClient(process.env.TEMPODB_API_KEY, process.env.TEMPODB_API_SECRET);
 
 var stations = {},
     stationsById = {},
