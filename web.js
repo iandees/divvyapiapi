@@ -6,8 +6,6 @@ var request = require('request'),
 var app = express();
 app.use(express.logger());
 
-console.log(process.env);
-
 var tempodb = new TempoDBClient(process.env.TEMPODB_API_KEY, process.env.TEMPODB_API_SECRET);
 
 var stations = {},
@@ -102,8 +100,8 @@ function minutely() {
             tempoData.push({key: "divvy-" + stations[i].id + "-status", v: stations[i].statusKey});
         }
 
-        var lastUpdate = Date.parse(body.executionTime + " UTC-05:00"),
-            ago = new Date().getTime() - lastUpdate;
+        var lastUpdate = new Date(body.executionTime + " UTC-05:00"),
+            ago = new Date().getTime() - lastUpdate.getTime();
 
         tempodb.write_bulk(lastUpdate, tempoData);
 
