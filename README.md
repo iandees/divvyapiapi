@@ -8,6 +8,9 @@ I proxy the real (unpublished) [Divvy API](http://www.divvybikes.com/stations/js
 and throw it into a KNN tree so you can make efficient nearby lookups based on a provided lat/lon.
 You can also filter results to only include stations with bikes or with available docks.
 
+A sample application can be viewed at [http://shrouded-beach-2183.herokuapp.com](http://shrouded-beach-2183.herokuapp.com).
+This is also the API endpoint where the calls below can be directed.
+
 `/stations/nearby`
 ------------------
 
