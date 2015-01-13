@@ -1,12 +1,9 @@
 var request = require('request'),
     express = require('express'),
     cors = require('cors'),
-    sphereKnn = require('sphere-knn'),
-    TempoDBClient = require('tempodb').TempoDBClient;
+    sphereKnn = require('sphere-knn');
 var app = express();
 app.use(express.logger());
-
-var tempodb = new TempoDBClient(process.env.TEMPODB_API_KEY, process.env.TEMPODB_API_SECRET);
 
 var stations = {},
     stationsById = {},
@@ -91,19 +88,13 @@ function minutely() {
         stations = body.stationBeanList;
         stationsLookup = new sphereKnn(stations);
 
-        tempoData = [];
         stationsById = {};
         for (var i = 0; i < stations.length; i++) {
             stationsById[stations[i].id] = stations[i];
-            tempoData.push({key: "divvy-" + stations[i].id + "-availableDocks", v: stations[i].availableDocks});
-            tempoData.push({key: "divvy-" + stations[i].id + "-availableBikes", v: stations[i].availableBikes});
-            tempoData.push({key: "divvy-" + stations[i].id + "-status", v: stations[i].statusKey});
         }
 
         var lastUpdate = new Date(body.executionTime + " UTC-05:00"),
             ago = new Date().getTime() - lastUpdate.getTime();
-
-        tempodb.write_bulk(lastUpdate, tempoData);
 
         console.log("Successfully loaded " + stations.length + " stations. Last update was " + ago + "ms ago");
     });
