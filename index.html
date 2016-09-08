@@ -7,8 +7,8 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.css" />
-    <!--[if lte IE 8]><link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.ie.css" /><![endif]-->
+    <link rel="stylesheet" href="https://cdn.leafletjs.com/leaflet-0.5/leaflet.css" />
+    <!--[if lte IE 8]><link rel="stylesheet" href="https://cdn.leafletjs.com/leaflet-0.5/leaflet.ie.css" /><![endif]-->
 </head>
 <body>
     <h1>Super Simple Divvy API</h1>
@@ -32,15 +32,15 @@
     <input id="prefer_all" type="radio" name="prefer" value="all" onClick="updateToggles(this);" checked/>
     <label for="prefer_all">Show all stations</label>
 
-    <script src="http://cdn.leafletjs.com/leaflet-0.5/leaflet.js"></script>
+    <script src="https://cdn.leafletjs.com/leaflet-0.5/leaflet.js"></script>
     <script>
 
         var prefer = null;
         var map = L.map('map').setView([41.8826, -87.6506], 13);
 
-        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 18,
-            attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
+            attribution: 'Map data &copy; <a href="https://openstreetmap.org">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
         }).addTo(map);
 
         var geojsonLayer = new L.GeoJSON([], {
