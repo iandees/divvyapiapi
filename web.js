@@ -81,7 +81,7 @@ function stationToGeoJson(obj) {
 
 function minutely() {
     request({
-        uri: 'http://www.divvybikes.com/stations/json/',
+        uri: 'https://feeds.divvybikes.com/stations/stations.json',
         json: true
     }, function(err, resp, body) {
         if (err) return;
